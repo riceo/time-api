@@ -1,0 +1,91 @@
+box: java
+
+# Developer
+dev:
+  steps:
+    - script:
+      name: gradle bootRun
+      code: |
+        ./gradlew bootRun
+
+# Build Application
+build:
+  steps:
+
+    - script:
+        name: Run Junit tests
+        code: |
+          ./gradlew --full-stacktrace test
+
+    - script:
+        name: Gradle Build
+        code: |
+          ./gradlew --full-stacktrace -q --project-cache-dir=$WERCKER_CACHE_DIR build
+
+    - script:
+        name: Place JAR in output directory
+        code: |
+            mv build/libs/time-api-*.jar $WERCKER_OUTPUT_DIR/time-api.jar
+
+# Push Docker Image
+push-image:
+    steps:
+        - internal/docker-push:
+            username: $DOCKERHUB_USERNAME
+            password: $DOCKERHUB_PASSWORD
+            cmd: java -jar /pipeline/source/time-api.jar
+            tag: time-api-$WERCKER_GIT_COMMIT
+            ports: "8080"
+            repository: riceo/sandbox
+
+# Deploy to a Kubernetes cluster
+deploy-to-kubernetes:
+    # We only need a minimal shell environment to run Kubectl.
+    box:
+        id: alpine
+        cmd: /bin/sh
+    steps:
+
+    # Create some Kubernetes authentications certificates to interact with.
+    - create-file:
+        name: Create Kubernetes CA
+        filename: ca.pem
+        overwrite: true
+        content: $KUBERNETES_CA
+
+    - create-file:
+        name: Create Kubernetes Client Cert
+        filename: cert.pem
+        overwrite: true
+        content: $KUBERNETES_CLIENT_CERT
+
+    - create-file:
+        name: Create Kubernetes Client Key
+        filename: key.pem
+        overwrite: true
+        content: $KUBERNETES_CLIENT_KEY
+
+    # https://github.com/wercker/step-bash-template
+    # This Wercker step will look for files in our repo with a .template extension.
+    # It will expand any environment variables in those files, then remove the
+    # template extension.
+    - bash-template
+
+    # The step above should leave us with a Kubernetes service and deployment yml files.
+    # We'll create a directory to move them to.
+    - script:
+        name: Prepare Kubernetes files
+        code: |
+          mkdir $WERCKER_OUTPUT_DIR/kubernetes
+          mv kubernetes_*.yml $WERCKER_OUTPUT_DIR/kubernetes
+
+    # `apply` is a good command to use here, as it'll create Kubernetes entities if they are missing.
+    - kubectl:
+        name: deploy to kubernetes
+        server: $KUBERNETES_MASTER
+        certificate-authority: ca.pem
+        client-certificate: cert.pem
+        client-key: key.pem
+        command: apply -f $WERCKER_OUTPUT_DIR/kubernetes/
+
+

@@ -1,0 +1,35 @@
+# This template file will have its environment variables expanded
+# and the .template extension removed by the bash-template Wercker step.
+# See wercker.yml.
+
+# Service Definition
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello
+  labels:
+    app: hello
+    commit: ${WERCKER_GIT_COMMIT}
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: hello
+    commit: ${WERCKER_GIT_COMMIT}
+  type: LoadBalancer
+---
+# Ingress
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hello-ingress
+spec:
+  rules:
+  - host: hello.demo.wercker.com
+    http:
+      paths:
+      - path:
+        backend:
+          serviceName: hello
+          servicePort: 8080
