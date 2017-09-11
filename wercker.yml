@@ -26,6 +26,7 @@ build:
         name: Place JAR in output directory
         code: |
             mv build/libs/time-api-*.jar $WERCKER_OUTPUT_DIR/time-api.jar
+            mv *.template $WERCKER_OUTPUT_DIR/
 
 # Push Docker Image
 push-image:
