@@ -78,6 +78,7 @@ deploy-to-kubernetes:
         name: Prepare Kubernetes files
         code: |
           ls -lth
+          cat kubernetes_deployment.yml
           mkdir $WERCKER_OUTPUT_DIR/kubernetes
           mv kubernetes_*.yml $WERCKER_OUTPUT_DIR/kubernetes
 
