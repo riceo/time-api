@@ -28,4 +28,4 @@ spec:
           containerPort: 8080
           protocol: TCP
       imagePullSecrets:
-        - name: werckerdemos
+        - name: wercker
