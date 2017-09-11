@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: time-api-server
-        image: riceo/sandbox:time-api:${WERCKER_GIT_COMMIT}
+        image: riceo/sandbox:time-api-${WERCKER_GIT_COMMIT}
         imagePullPolicy: Always
         ports:
         - name: time-api-server
