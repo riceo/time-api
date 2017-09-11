@@ -1,6 +1,6 @@
 box: java
 
-# Developer
+# Developer. Noop.
 dev:
   steps:
     - script:
