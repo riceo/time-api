@@ -6,16 +6,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: hello
+  name: time-api
   labels:
-    app: hello
+    app: time-api
     commit: ${WERCKER_GIT_COMMIT}
 spec:
   ports:
   - port: 80
     targetPort: 8080
   selector:
-    app: hello
+    app: time-api
     commit: ${WERCKER_GIT_COMMIT}
   type: LoadBalancer
 ---
@@ -23,13 +23,13 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: hello-ingress
+  name: time-api-ingress
 spec:
   rules:
-  - host: hello.demo.wercker.com
+  - host: time-api.demo.wercker.com
     http:
       paths:
       - path:
         backend:
-          serviceName: hello
+          serviceName: time-api
           servicePort: 8080

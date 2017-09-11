@@ -5,26 +5,26 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: hello
+  name: time-api
   labels:
     commit: ${WERCKER_GIT_COMMIT}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: hello
+      app: time-api
   template:
     metadata:
       labels:
-        app: hello
+        app: time-api
         commit: ${WERCKER_GIT_COMMIT}
     spec:
       containers:
-      - name: hello-server
-        image: ${DOCKERHUB_REPOSITORY}:${WERCKER_GIT_COMMIT}
+      - name: time-api-server
+        image: riceo/sandbox:time-api:${WERCKER_GIT_COMMIT}
         imagePullPolicy: Always
         ports:
-        - name: hello-server
+        - name: time-api-server
           containerPort: 8080
           protocol: TCP
       imagePullSecrets:
