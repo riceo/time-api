@@ -18,3 +18,18 @@ spec:
     app: time-api
     commit: ${WERCKER_GIT_COMMIT}
   type: LoadBalancer
+---
+# Ingress
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: time-api-ingress
+spec:
+  rules:
+  - host: time-api.demo.wercker.com
+    http:
+      paths:
+      - path:
+        backend:
+          serviceName: time-api
+          servicePort: 8080
