@@ -33,7 +33,7 @@ push-image:
     steps:
         - internal/docker-push:
             cmd: java -jar /pipeline/source/time-api.jar
-            tag: time-api-$WERCKER_GIT_COMMIT
+            tag: $WERCKER_GIT_BRANCH
             ports: "8080"
 
 # Deploy to a Kubernetes cluster
