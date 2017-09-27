@@ -35,7 +35,6 @@ push-image:
             cmd: java -jar /pipeline/source/time-api.jar
             tag: $WERCKER_GIT_BRANCH
             ports: "8080"
-            registry: wcr.io
 
 # Deploy to a Kubernetes cluster
 deploy-to-kubernetes:
