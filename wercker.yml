@@ -59,14 +59,6 @@ deploy-to-kubernetes:
           mkdir $WERCKER_OUTPUT_DIR/kubernetes
           mv kubernetes_*.yml $WERCKER_OUTPUT_DIR/kubernetes
 
-    # Temporary fix whilst LoadBalancers are being worked on
-    - kubectl:
-        name: clear existing service
-        server: $KUBERNETES_MASTER
-        token: $KUBERNETES_TOKEN
-        insecure-skip-tls-verify: true
-        command: delete svc time-api
-
     - kubectl:
         name: deploy to kubernetes
         server: $KUBERNETES_MASTER
