@@ -65,7 +65,7 @@ deploy-to-kubernetes:
         server: $KUBERNETES_MASTER
         token: $KUBERNETES_TOKEN
         insecure-skip-tls-verify: true
-        command: kubectl delete svc time-api
+        command: delete svc time-api
 
     - kubectl:
         name: deploy to kubernetes
