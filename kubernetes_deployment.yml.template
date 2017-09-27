@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: time-api-server
-        image: ${DOCKER_REPO}:${WERCKER_GIT_BRANCH}
+        image: ${WERCKER_APPLICATION_OWNER_NAME}/${WERCKER_APPLICATION_NAME}:${WERCKER_GIT_BRANCH}
         imagePullPolicy: Always
         ports:
         - name: time-api-server
