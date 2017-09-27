@@ -9,7 +9,7 @@ metadata:
   labels:
     commit: ${WERCKER_RUN_ID}
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: time-api
@@ -29,3 +29,8 @@ spec:
           protocol: TCP
       imagePullSecrets:
         - name: ${IMAGEPULL_SECRET}
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      tolerations:
+        - key: "node-role.kubernetes.io/master"
+          effect: NoSchedule
