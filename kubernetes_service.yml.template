@@ -9,7 +9,7 @@ metadata:
   name: time-api
   labels:
     app: time-api
-    commit: ${WERCKER_GIT_COMMIT}
+    commit: ${WERCKER_RUN_ID}
 spec:
   ports:
   - port: 8080
@@ -18,7 +18,7 @@ spec:
     name: http
   selector:
     app: time-api
-    commit: ${WERCKER_GIT_COMMIT}
+    commit: ${WERCKER_RUN_ID}
 ---
 # Ingress
 apiVersion: extensions/v1beta1
